@@ -1,10 +1,15 @@
-const express = require('express');
-const http = require('http');
+const { readFileSync } = require('fs');
+const https = require('https');
 const { Server } = require('socket.io');
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+const server = https.createServer(
+  {
+    key: readFileSync("../key.pem"),
+    cert: readFileSync("../cert.pem"),
+  },
+);
+
+const io = new Server(server);
 
 const randomNameSelection = [
   "Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Hotel", "India", "Juliett",

@@ -10,14 +10,12 @@ import SKYBOXLOCATIONpy from '../skyboxes/Clear/vz_clear_up.png';
 import SKYBOXLOCATIONny from '../skyboxes/Clear/vz_clear_down.png';
 import SKYBOXLOCATIONpz from '../skyboxes/Clear/vz_clear_front.png';
 import SKYBOXLOCATIONnz from '../skyboxes/Clear/vz_clear_back.png';
-import CROSSHAIRIMAGE from '../crosshair.png';
 import TREEMODEL from '../Tree.glb';
 import TANKMODEL from '../tank.glb';
 import GRASSTEXTURE from '../grasstexture.png';
-import { Vector2, Vector3 } from 'three';
 
 //connect!
-const ENDPOINT = 'http://127.0.0.1:8081';
+const ENDPOINT = 'http://34.130.255.101:8081';
 const SOCKET = socketClient(ENDPOINT);
 
 function sendUpdate(myself) {
@@ -93,7 +91,7 @@ hud.style.width = "15%";
 hud.style.backgroundColor = "gray";
 hud.style.border = "1px solid black";
 const whoami = document.createElement("p");
-whoami.innerText = "My name here";
+whoami.innerText = "not yet connected";
 whoami.style.fontSize = "32px";
 whoami.style.textAlign = "center";
 hud.appendChild(whoami);
@@ -410,8 +408,8 @@ function render( time ) {
   // make sure my tank doesn't go into any trees
   for (let i = 0; i<trees.length; i++) {
     let tree = trees[i];
-    let treePosition = new Vector2(tree[0], tree[1]);
-    let tankPosition = new Vector2(me.position.x, me.position.z);
+    let treePosition = new THREE.Vector2(tree[0], tree[1]);
+    let tankPosition = new THREE.Vector2(me.position.x, me.position.z);
     let deltaPosition = tankPosition.clone().sub(treePosition);
     if (deltaPosition.length() < 1.1) {
       // collision

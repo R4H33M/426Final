@@ -15,7 +15,7 @@ import TANKMODEL from '../tank.glb';
 import GRASSTEXTURE from '../grasstexture.png';
 
 //connect!
-const ENDPOINT = 'http://127.0.0.1:8081/';
+const ENDPOINT = 'http://34.130.255.101:8081';
 const SOCKET = socketClient(ENDPOINT);
 
 function sendUpdate(myself) {

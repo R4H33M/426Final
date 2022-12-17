@@ -16,6 +16,7 @@ import GRASSTEXTURE from '../grasstexture.png';
 
 //connect!
 const ENDPOINT = 'http://34.130.255.101:8081';
+//const ENDPOINT = 'http://127.0.0.1:8081';
 const SOCKET = socketClient(ENDPOINT);
 
 function sendUpdate(myself) {
@@ -113,6 +114,10 @@ notif.innerHTML = "";
 notif.style.fontSize = "40px";
 notif.style.fontWeight = "bold";
 notif.style.textAlign = "right";
+notif.style.padding = "10px";
+notif.style.borderRadius = "20px";
+notif.style.backdropFilter = "blur(10px)";
+notif.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
 document.body.appendChild(notif);
 
 // reload hud element
@@ -280,14 +285,22 @@ SOCKET.on("PlayerShooting", (name) => {
 SOCKET.on("PlayerShot", (names) => {
   notifqueue.push(names[0] + " killed " + names[1]);
   runNotif();
-  if (_myName === names[0]) score['Local_Player']++;
-  else score[names[0]]++;
+  // i killed someone
+  if (_myName === names[0]) {
+    score['Local_Player']++;
+  } else {
+    score[names[0]]++;
+  }
+  // i was not the one that was killed
   // was it me who died
   if (_myName == names[1]) {
     spawnPlayer();
     score['Local_Player'] = 0;
   } else {
     score[names[1]] = 0;
+    // remove them from view until they respawn themselves
+    players[[names[1]]].position.y = 100;
+    updatePlayer(players, names[1]);
   }
   updateScoreboard();
 });
@@ -389,6 +402,8 @@ function shootLaser() {
   
 }
 
+let debugcamera = false;
+
 function render( time ) {
   const me = players['Local_Player'];
 
@@ -402,6 +417,11 @@ function render( time ) {
   if (keyMap.get('ArrowUp')) if (!reloading) shootLaser();
   if (keyMap.get('ArrowRight')) players['Local_Player'].direction -= 0.03;
   if (keyMap.get('ArrowLeft')) players['Local_Player'].direction += 0.03;
+  if (keyMap.get('0')) {
+    debugcamera = true;
+    camera.position.set(0, 40, 0);
+    camera.lookAt(new THREE.Vector3(0,0,0));
+  }
   
   //make sure my tank doesn't leave map (invisible walls)
   if (me.position.x > 40) me.position.x = 40;
@@ -438,9 +458,11 @@ function render( time ) {
   updatePlayer(players, 'Local_Player');
   sendUpdate(me);
 
-  camera.position.copy(me.position).add(moveForward);
-  camera.position.add(new THREE.Vector3(0,0.4,0));
-  camera.lookAt(camera.position.clone().add(moveForward));
+  if (!debugcamera) {
+    camera.position.copy(me.position).add(moveForward);
+    camera.position.add(new THREE.Vector3(0,0.4,0));
+    camera.lookAt(camera.position.clone().add(moveForward));
+  }
 
   //controls.update();
   renderer.render(scene, camera);

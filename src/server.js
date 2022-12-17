@@ -153,7 +153,7 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('PlayerDisconnect', playerName);
   });
 
-  socket.on("PlayerShot", (name) => {
+  socket.on('PlayerShot', (name) => {
     // broadcast and kill
     const shooter = nameIndex[socket.id];
     console.log(nameIndex[socket.id], "shot", name);

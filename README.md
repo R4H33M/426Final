@@ -9,4 +9,6 @@ To run it yourself, change the ENDPOINT to localhost in app.js
 and run "npm start" to start the front-end. The run "node server.js"
 to start the backend.
 
-You can read the writeup [here](https://docs.google.com/document/d/1Ltq25YMRn1JUbnTdLU8gI6d5bxCrmrC-dnLnsK5tW5s/edit).
+You can read the writeup [here](https://docs.google.com/document/d/1Ltq25YMRn1JUbnTdLU8gI6d5bxCrmrC-dnLnsK5tW5s/edit),
+also included as [PDF](COS426FinalWriteup.pdf) in this repo but then the GIF I included doesn't play!
+
